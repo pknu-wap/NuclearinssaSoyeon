@@ -9,7 +9,7 @@ headers = {"appKey" : "1e35c118-1297-49dd-84d4-b96b03c11ba9",
 
 #passList,gpsTime,endPoiId,angle:선택값
 
-datas={"startX":"129.1008722",
+data={"startX":"129.1008722",
        "startY":"35.13469",
        "angle":"",
        "speed":"30",
@@ -25,9 +25,12 @@ datas={"startX":"129.1008722",
        "gpsTime":"",
        "sort":"index"}
 
-r= requests.post("https://api2.sktelecom.com/tmap/routes/pedestrian?version=1&format=json", params=datas, headers=headers)
+r= requests.post("https://api2.sktelecom.com/tmap/routes/pedestrian?version=1&format=json", params=data, headers=headers)
 
-print (r.json())
+##print response
+#print (r.json())
 
-
-data=json.loads(r.text)
+res=json.loads(r.text)
+tdistance=res['features'][0]['properties']['totalDistance']
+ttime=res['features'][0]['properties']['totalTime']
+print(data['startName']+"에서", data['endName']+"까지","총 이동 거리는 약",tdistance,"m 이며, 총 소요 시간은 약",ttime//60,"분 입니다.")
