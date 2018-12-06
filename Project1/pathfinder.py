@@ -74,6 +74,10 @@ elif dst == '한울관':
     endX = 129.1027805
     endY = 35.1330131
 
+if src == dst:
+    print('출발지와 목적지는 달라야 합니다.')
+    exit(1)
+
 if src != '아름관' and src != '풋살장' and src != '한울관':
     POIsrc_param = {"searchKeyword": src,
                     "areaLLCode": "26",
