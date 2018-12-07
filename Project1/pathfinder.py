@@ -1,7 +1,8 @@
-# 경로 시각화, 보행 속도 측정 -> 시간 표시
+# 경로 시각화, 보행 속도 측정
 
 import requests
 import json
+import datetime
 
 headers = {"appKey": "1e35c118-1297-49dd-84d4-b96b03c11ba9",
            "Accept-Language": "ko",
@@ -43,16 +44,27 @@ print_places()
 
 def select_src():
     start = input("출발지를 선택해 주세요. (1~44) ")
+    if start == '':
+        return None
     return places[int(start)]
 
 
 def select_dst():
     end = input("도착지를 선택해 주세요. (1~44) ")
+    if end == '':
+        return None
     return places[int(end)]
 
 
 src = select_src()
+if src is None:
+    print('출발지를 선택해야 합니다.')
+    exit(1)
+
 dst = select_dst()
+if dst is None:
+    print('도착지를 선택해야 합니다.')
+    exit(1)
 
 if src == '아름관':
     startX = 129.107914
@@ -77,6 +89,11 @@ elif dst == '한울관':
 if src == dst:
     print('출발지와 목적지는 달라야 합니다.')
     exit(1)
+
+startX = 0
+startY = 0
+endX = 0
+endY = 0
 
 if src != '아름관' and src != '풋살장' and src != '한울관':
     POIsrc_param = {"searchKeyword": src,
@@ -146,5 +163,16 @@ while res['features'][i]['properties']['description'] != '도착':
     print(description)
     i += 1
 
+current_time = datetime.datetime.now()
+curr_hour = current_time.hour
+curr_minute = current_time.minute
+arrive_hour = curr_hour + ttime // 3600
+arrive_minute = curr_minute + ttime // 60
+
 print(data['startName'] + "에서", data['endName'] + "까지", "총 이동 거리는 약", tdistance, "m 이며, 총 소요 시간은 약", ttime // 60,
-      "분 입니다.")
+      "분 입니다.\n")
+
+if arrive_hour // 12:
+    print("도착 예상 시간은", "오후", arrive_hour - 12, "시", arrive_minute, "분 입니다.")
+else:
+    print("도착 예상 시간은", "오전", arrive_hour, "시", arrive_minute, "분 입니다.")
