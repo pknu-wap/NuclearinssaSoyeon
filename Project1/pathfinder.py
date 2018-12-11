@@ -44,26 +44,26 @@ print_places()
 
 def select_src():
     start = input("출발지를 선택해 주세요. (1~44) ")
-    if start == '':
+    if int(start) < 1 or int(start) > 44:
         return None
     return places[int(start)]
 
 
 def select_dst():
     end = input("도착지를 선택해 주세요. (1~44) ")
-    if end == '':
+    if int(end) < 1 or int(end) > 44:
         return None
     return places[int(end)]
 
 
 src = select_src()
 if src is None:
-    print('출발지를 선택해야 합니다.')
+    print('올바른 출발지를 선택해야 합니다.')
     exit(1)
 
 dst = select_dst()
 if dst is None:
-    print('도착지를 선택해야 합니다.')
+    print('올바른 도착지를 선택해야 합니다.')
     exit(1)
 
 if src == '아름관':
